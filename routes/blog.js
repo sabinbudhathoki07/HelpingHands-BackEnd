@@ -13,11 +13,11 @@ router.post("/blog/insert", upload.single("images"), async (req, res) => {
     // Create new user
     let blog = new Blog({
         blogTitle :req.body.blogTitle,
-		blogDescription : req.body.blogDescription,
-		 blogDetail : req.body.blogDetail,
- 		 blogTags : req.body.blogTags,
- 		 blogPostedBy : req.body.blogPostedBy,
-          blogImage: result.secure_url
+		    blogDescription : req.body.blogDescription,
+        blogDetail : req.body.blogDetail,
+        blogTags : req.body.blogTags,
+        blogPostedBy : req.body.blogPostedBy,
+        blogImage: result.secure_url
     });
     // Save user
     await blog.save();
@@ -86,50 +86,50 @@ router.post("/blog/insert", upload.single("images"), async (req, res) => {
 // 	}
 // });
 
-// router.get('/blog/display',(req,res) => {
-// 	Blog.find().then(function(blogDetails){
-// 		res.send(blogDetails);
-// 	})
-// });
+router.get('/blog/display',(req,res) => {
+	Blog.find().then(function(blogDetails){
+		res.send(blogDetails);
+	})
+});
 
-// // My BLog Display
-// router.get("/my-blog/display/:id",function(req,res){    
-//     const id = req.params.id;
-// 	console.log(id)
-// 	var myblog = { blogPostedBy: id };
-// 	Blog.find(myblog)
-// 	.then(function(Post){
-// 		res.send(Post);
-// 	})
-// });
+// My BLog Display
+router.get("/my-blog/display/:id",function(req,res){    
+    const id = req.params.id;
+	console.log(id)
+	var myblog = { blogPostedBy: id };
+	Blog.find(myblog)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
 
-// router.get('/blog/latest/limit=2',(req,res) => {
-// 	var mysort = { blogPostDate: -1 };
-// 	Blog.find().sort(mysort).limit(2)
-// 	.then(function(blogDetails){
-// 		res.send(blogDetails);
-// 	})
-// });
+router.get('/blog/latest/limit=2',(req,res) => {
+	var mysort = { blogPostDate: -1 };
+	Blog.find().sort(mysort).limit(2)
+	.then(function(blogDetails){
+		res.send(blogDetails);
+	})
+});
 
-// router.get('/blog/latest/limit=3',(req,res) => {
-// 	var mysort = { blogPostDate: -1 };
-// 	Blog.find().sort(mysort).limit(3)
-// 	.then(function(blogDetails){
-// 		res.send(blogDetails);
-// 	})
-// });
+router.get('/blog/latest/limit=3',(req,res) => {
+	var mysort = { blogPostDate: -1 };
+	Blog.find().sort(mysort).limit(3)
+	.then(function(blogDetails){
+		res.send(blogDetails);
+	})
+});
 
-// // User Display Single
-// router.get("/blog/display/:id",function(req,res){    
-//     const id = req.params.id;
-//     Blog.findOne({_id:id})
-//     .then(function(data){
-//         res.status(200).json(data);
-//     })
-//     .catch(function(err){
-//         res.status(500).json({message : err})
-//     })
-// });
+// User Display Single
+router.get("/blog/display/:id",function(req,res){    
+    const id = req.params.id;
+    Blog.findOne({_id:id})
+    .then(function(data){
+        res.status(200).json(data);
+    })
+    .catch(function(err){
+        res.status(500).json({message : err})
+    })
+});
 
 
 
