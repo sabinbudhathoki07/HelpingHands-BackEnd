@@ -27,7 +27,7 @@ router.post("/user/register", function (req, res) {
 			return;
 		  }
 		  res.send({
-			message: "User was registered successfully! Please check your email",
+			message: "user was registered successfully! Please check your email",
 		  });
   
 		  nodemailer.sendConfirmationEmail(
@@ -77,7 +77,7 @@ router.post("/user/register", function (req, res) {
 		if (data.Status === "Verified") {
 		  return res.status(200).send({ message: "Already Verified" });
 		} else if (!data) {
-		  return res.status(404).send({ message: "User Not Found" });
+		  return res.status(404).send({ message: "user Not Found" });
 		} else if (data) {
 		  user
 			.updateOne(
@@ -103,7 +103,7 @@ router.post("/user/register", function (req, res) {
 
 
 
-// // User Register
+// // user Register
 // router.post('/user/register',function(req,res){
 // 	const errors = validationResult(req);
 
@@ -138,7 +138,7 @@ router.post("/user/register", function (req, res) {
 // })
 
 
-// // User Login
+// // user Login
 // router.post('/user/login',function(req,res){
 	
 // 	console.log("Entered Login Route");
@@ -149,7 +149,7 @@ router.post("/user/register", function (req, res) {
 // 	console.log("\nEmailAddress :", userEmailAddress);
 // 	console.log("userPassword :", userPassword);
     
-// 	User.findOne({userEmailAddress: userEmailAddress})
+// 	user.findOne({userEmailAddress: userEmailAddress})
 // 	.then(function(userModel){
 
 // 		if(userModel==null){
@@ -190,7 +190,7 @@ router.get("/account/:id",function(req,res){
 	console.log("Account")
     const id = req.params.id;
 	console.log(id)
-    User.findOne({_id:id})
+    user.findOne({_id:id})
     .then(function(result){
         res.status(200).json(result);
     })
@@ -200,7 +200,7 @@ router.get("/account/:id",function(req,res){
 });
 
 router.get('/user/display',(req,res) => {
-	User.find().then(function(userDetails){
+	user.find().then(function(userDetails){
 		res.send(userDetails);
 	})
 });
@@ -215,7 +215,7 @@ router.put('/user/load-balance',(req,res) => {
 	console.log("Load-Balance Amount : " + req.body.userNewBalance)
 	console.log("Your New Balance Amount: " + Balance)
 
-    User.updateOne({_id:id},{
+    user.updateOne({_id:id},{
 		userBalance : Balance
 	})
 	.then(function(result){
@@ -229,7 +229,7 @@ router.put('/user/load-balance',(req,res) => {
 router.get('/my-account/display/:id',(req,res) => {
     const id = req.params.id;
 	console.log(id)
-    User.findOne({_id:id})
+    user.findOne({_id:id})
     .then(function(result){
         res.status(200).json(result);
     })
