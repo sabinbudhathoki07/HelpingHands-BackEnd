@@ -2,63 +2,34 @@ const express = require('express');
 const router = express.Router();
 const Volunteer = require('../models/volunteer');
 const bcrypt = require('bcryptjs');
-const volunteer = require('../middleware/uploadsVolunteer');
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../utils/multer");
 
 //Volunteer Register
-router.post('/volunteer/register',volunteer.single('volunteerImage'),(req, res) => {
-	console.log("Entered Volunteer Register Route");
-	const errors = validationResult(req);
+router.post('/volunteer/register',upload.single("images"),async (req, res) => {
+	try {
+	  // Upload image to cloudinary
+	  const result = await cloudinary.uploader.upload(req.file.path);
 
-	if(!errors.isEmpty()){
-		var error = errors.array();
-		return res.status(400).json(error);
-	}
-	else{
-		if(req.file==undefined){
-			console.log("\nInvalid Profile Picture Format");
-            return res.status(500).json("Invalid Profile Picture Image Format");
-        }
-		const volunteerImage = req.file.filename;
-		const volunteerFullName = req.body.volunteerFullName;
-		const volunteerEmailAddress = req.body.volunteerEmailAddress;
-		const volunteerDateOfBirth = req.body.volunteerDateOfBirth;
-		const volunteerGender = req.body.volunteerGender;
-		const volunteerContactNumber = req.body.volunteerContactNumber;
-		const volunteerAddress = req.body.volunteerAddress;
-		const volunteerPostalCode = req.body.volunteerPostalCode;
-		const volunteerNationality = req.body.volunteerNationality;
-
-
-		var volunteerDetails = new Volunteer({
-			volunteerImage: volunteerImage,
-			volunteerFullName: volunteerFullName,
-			volunteerEmailAddress: volunteerEmailAddress,
-			volunteerDateOfBirth: volunteerDateOfBirth,
-			volunteerGender: volunteerGender,
-			volunteerContactNumber: volunteerContactNumber,
-			volunteerAddress: volunteerAddress,
-			volunteerPostalCode: volunteerPostalCode,
-			volunteerNationality: volunteerNationality
+		let volunteerDetails = new Volunteer({
+			volunteerImage: result.secure_url,
+			volunteerFullName: req.body.volunteerFullName,
+			volunteerEmailAddress: req.body.volunteerEmailAddress,
+			volunteerDateOfBirth: req.body.volunteerDateOfBirth,
+			volunteerGender: req.body.volunteerGender,
+			volunteerContactNumber: req.body.volunteerContactNumber,
+			volunteerAddress: req.body.volunteerAddress,
+			volunteerPostalCode: req.body.volunteerPostalCode,
+			volunteerNationality: req.body.volunteerNationality
 		});
 				
-	    volunteerDetails.save()
-		.then(function(data){
-			res.status(201).json({ 
-				success: true, message : "Volunteer Registered"
-			})
-			console.log("Volunteer Registered");
-			console.log(volunteerDetails);
-		})
-		.catch(function(error){
-			res.status(500).json({
-				message: "Volunteer Registration Failed"
-			})
-			console.log(error);
-			console.log("Volunteer Registration Failed");
-		});
-	}
+	    await volunteerDetails.save();
+			res.json(volunteerDetails);
+		} catch (err) {
+		console.log(err);
+		}
 });
 
 // Volunteer Display All

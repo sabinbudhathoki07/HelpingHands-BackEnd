@@ -12,7 +12,7 @@ router.post("/blog/insert", upload.single("images"), async (req, res) => {
 
     // Create new user
     let blog = new Blog({
-        blogTitle :req.body.blogTitle,
+        blogTitle : req.body.blogTitle,
 		    blogDescription : req.body.blogDescription,
         blogDetail : req.body.blogDetail,
         blogTags : req.body.blogTags,

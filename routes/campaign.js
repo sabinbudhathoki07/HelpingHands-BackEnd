@@ -2,65 +2,35 @@ const express = require('express');
 const router = express.Router();
 const Campaign = require('../models/campaign');
 const bcrypt = require('bcryptjs');
-const campaign = require('../middleware/uploadsCampaign');
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../utils/multer");
 
 //Campaign Post
-router.post('/campaign/insert',campaign.single('campaignImage'),(req, res) => {
-	console.log("Entered Campaign Insert Route");
-	const errors = validationResult(req);
+router.post('/campaign/insert',upload.single("images"),async (req, res) => {
+	try {
+	  // Upload image to cloudinary
+	  const result = await cloudinary.uploader.upload(req.file.path);
 
-	if(!errors.isEmpty()){
-		var error = errors.array();
-		return res.status(400).json(error);
-	}
-	else{
-		if(req.file==undefined){
-			console.log("\nInvalid Campaign Picture Format");
-            return res.status(500).json("Invalid Campaign Picture Image Format");
-        }
-		const campaignImage = req.file.filename;
-		const campaignName = req.body.campaignName;
-		const campaignShortDescription = req.body.campaignShortDescription;
-		const campaignGoal = req.body.campaignGoal;
-		const campaignDays = req.body.campaignDays;
-		const campaignCategories = req.body.campaignCategories;
-		const campaignTags = req.body.campaignTags;
-		const campaignFullDescription = req.body.campaignFullDescription;
-		const campaignPostedBy = req.body.campaignPostedBy;
-		
-
-
-		var Post = new Campaign({
-			campaignImage: campaignImage,
-			campaignName: campaignName,
-			campaignShortDescription: campaignShortDescription,
-			campaignGoal: campaignGoal,
-			campaignDays: campaignDays,
-			campaignCategories: campaignCategories,
-			campaignTags: campaignTags,
-			campaignFullDescription: campaignFullDescription,
-			campaignPostedBy : campaignPostedBy,
+		let CampaignDetails = new Campaign({
+			campaignImage: result.secure_url,
+			campaignName: req.body.campaignName,
+			campaignShortDescription: req.body.campaignShortDescription,
+			campaignGoal: req.body.campaignGoal,
+			campaignDays: req.body.campaignDays,
+			campaignCategories: req.body.campaignCategories,
+			campaignTags: req.body.campaignTags,
+			campaignFullDescription: req.body.campaignFullDescription,
+			campaignPostedBy : req.body.campaignPostedBy,
 			
 		});
-				
-	    Post.save()
-		.then(function(data){
-			res.status(201).json({ 
-				success: true, message : "Campaign Added"
-			})
-			console.log("Campaign Added");
-			console.log(Post);
-		})
-		.catch(function(error){
-			res.status(500).json({
-				message: "Campaign Addition Failed"
-			})
-			console.log(error);
-			console.log("Campaign Addition Failed");
-		});
-	}
+
+		await CampaignDetails.save();
+			res.json(CampaignDetails);
+		} catch (err) {
+		console.log(err);
+		}
 });
 
 // Campaign All Display
