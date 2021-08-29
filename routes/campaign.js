@@ -10,6 +10,7 @@ const upload = require("../utils/multer");
 //Campaign Post
 router.post('/campaign/insert',upload.single("images"),async (req, res) => {
 	try {
+		console.log("Campaign")
 	  // Upload image to cloudinary
 	  const result = await cloudinary.uploader.upload(req.file.path);
 
@@ -95,9 +96,45 @@ router.get('/campaign/display/environment',(req,res) => {
 	})
 });
 
+// Campaign Category : Food
+router.get('/campaign/display/food',(req,res) => {
+	var environment = { campaignCategories: "Food" };
+	Campaign.find(environment)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
+
+// Campaign Category : Funeral Expenses
+router.get('/campaign/display/funeral-expenses',(req,res) => {
+	var medical = { campaignCategories: "Funeral Expenses" };
+	Campaign.find(medical)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
+
 // Campaign Category : Medical Expenses
 router.get('/campaign/display/medical-expenses',(req,res) => {
 	var medical = { campaignCategories: "Medical Expenses" };
+	Campaign.find(medical)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
+
+// Campaign Category : Life Essential Necessities
+router.get('/campaign/display/life-essential-necessities',(req,res) => {
+	var medical = { campaignCategories: "Life Essential Necessities" };
+	Campaign.find(medical)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
+
+// Campaign Category : Others
+router.get('/campaign/display/other',(req,res) => {
+	var medical = { campaignCategories: "Others" };
 	Campaign.find(medical)
 	.then(function(Post){
 		res.send(Post);
