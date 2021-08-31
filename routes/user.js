@@ -205,6 +205,25 @@ router.get('/user/display',(req,res) => {
 	})
 });
 
+
+
+router.put('/user/update-profile',(req,res) => {
+	const id = req.body.id;
+	const userFullName = req.body.userFullName 
+	const userContactNumber = req.body.userContactNumber 
+
+    user.updateOne({_id:id},{
+		userFullName : userFullName,
+		userContactNumber : userContactNumber
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
 router.put('/user/load-balance',(req,res) => {
 	const id = req.body.id;
 	const userBalance = req.body.userBalance 

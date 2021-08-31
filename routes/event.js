@@ -98,6 +98,7 @@ router.get('/event/display/sports',(req,res) => {
 	})
 });
 
+
 // Event Category : Religious
 router.get('/event/display/religious',(req,res) => {
 	var religious = { eventCategories: "Religious" };

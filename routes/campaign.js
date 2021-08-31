@@ -67,7 +67,6 @@ router.get('/campaign/latest/limit=3',(req,res) => {
 	})
 });
 
-// Campaign Latest
 router.get('/campaign/latest/limit=4',(req,res) => {
 	var mysort = { campaignPostDate: -1 };
 	Campaign.find().sort(mysort).limit(4)
@@ -75,6 +74,7 @@ router.get('/campaign/latest/limit=4',(req,res) => {
 		res.send(Post);
 	})
 });
+
 
 // My BLog Display
 router.get("/my-campaign/display/:id",function(req,res){    
