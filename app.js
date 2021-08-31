@@ -21,6 +21,7 @@ connectDB();
 
 const userRoutes = require('./routes/user');
 const contactRoutes = require('./routes/contact');
+const adminRoutes = require('./routes/admin');
 const volunteerRoutes = require('./routes/volunteer');
 const blogRoutes = require('./routes/blog');
 const campaignRoutes = require('./routes/campaign');
@@ -30,6 +31,7 @@ const laterRoutes = require('./routes/later');
 app.use(express.static(static_path))
 app.use(express.json())
 app.use(userRoutes);
+app.use(adminRoutes);
 app.use(contactRoutes);
 app.use(volunteerRoutes);
 app.use(blogRoutes);

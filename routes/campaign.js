@@ -70,7 +70,7 @@ router.get('/campaign/limit=3',(req,res) => {
 // Campaign Latest
 router.get('/campaign/limit=4',(req,res) => {
 	var mysort = { campaignPostDate: -1 };
-	Campaign.find().sort(mysort).limit(3)
+	Campaign.find().sort(mysort).limit(4)
 	.then(function(Post){
 		res.send(Post);
 	})
