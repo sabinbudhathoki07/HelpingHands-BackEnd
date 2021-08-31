@@ -81,7 +81,7 @@ router.get('/event/display/entertainment',(req,res) => {
 });
 
 // Event Category : Social
-router.get('/event/display/social',(req,res) => {
+router.get('/event/social',(req,res) => {
 	var social = { eventCategories: "Social" };
 	Event.find(social)
 	.then(function(Post){
@@ -90,7 +90,7 @@ router.get('/event/display/social',(req,res) => {
 });
 
 // Event Category : Sports
-router.get('/event/display/sports',(req,res) => {
+router.get('/event/sports',(req,res) => {
 	var sports = { eventCategories: "Sports" };
 	Event.find(sports)
 	.then(function(Post){
@@ -100,7 +100,7 @@ router.get('/event/display/sports',(req,res) => {
 
 
 // Event Category : Religious
-router.get('/event/display/religious',(req,res) => {
+router.get('/event/religious',(req,res) => {
 	var religious = { eventCategories: "Religious" };
 	Event.find(religious)
 	.then(function(Post){
@@ -109,7 +109,7 @@ router.get('/event/display/religious',(req,res) => {
 });
 
 // Event Category : Educational
-router.get('/event/display/educational',(req,res) => {
+router.get('/event/educational',(req,res) => {
 	var educational = { eventCategories: "Educational" };
 	Event.find(educational)
 	.then(function(Post){
@@ -118,7 +118,7 @@ router.get('/event/display/educational',(req,res) => {
 });
 
 // Event Category : Political
-router.get('/event/display/political',(req,res) => {
+router.get('/event/political',(req,res) => {
 	var political = { eventCategories: "Political" };
 	Event.find(political)
 	.then(function(Post){
@@ -127,7 +127,7 @@ router.get('/event/display/political',(req,res) => {
 });
 
 // Event Category : Charitable
-router.get('/event/display/charitable',(req,res) => {
+router.get('/event/charitable',(req,res) => {
 	var charitable = { eventCategories: "Charitable" };
 	Event.find(charitable)
 	.then(function(Post){
@@ -136,7 +136,7 @@ router.get('/event/display/charitable',(req,res) => {
 });
 
 // Event Category : Others
-router.get('/event/display/others',(req,res) => {
+router.get('/event/others',(req,res) => {
 	var others = { eventCategories: "Others" };
 	Event.find(others)
 	.then(function(Post){
