@@ -67,6 +67,15 @@ router.get('/campaign/latest/limit=3',(req,res) => {
 	})
 });
 
+// Campaign Latest
+router.get('/campaign/latest/limit=4',(req,res) => {
+	var mysort = { campaignPostDate: -1 };
+	Campaign.find().sort(mysort).limit(4)
+	.then(function(Post){
+		res.send(Post);
+	})
+});
+
 // My BLog Display
 router.get("/my-campaign/display/:id",function(req,res){    
     const id = req.params.id;
@@ -116,8 +125,9 @@ router.get('/campaign/display/funeral-expenses',(req,res) => {
 
 // Campaign Category : Medical Expenses
 router.get('/campaign/display/medical-expenses',(req,res) => {
+	var mysort = { campaignPostDate: -1 };
 	var medical = { campaignCategories: "Medical Expenses" };
-	Campaign.find(medical)
+	Campaign.find(medical).sort(mysort)
 	.then(function(Post){
 		res.send(Post);
 	})

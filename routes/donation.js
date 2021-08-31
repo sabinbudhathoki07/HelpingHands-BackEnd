@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Donation = require('../models/donation');
 const bcrypt = require('bcryptjs');
+const User = require("../models/user");
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
 
 router.post('/donate',
 (req, res) => {
 	const errors = validationResult(req);
+    console.log("Donate")
 
 	if(!errors.isEmpty()){
 		res.send(errors.array());
@@ -24,6 +26,7 @@ router.post('/donate',
         const donorPostalCode = req.body.donorPostalCode;
         const donorDonated = req.body.donorDonated;
         const donatedBy = req.body.donatedBy;
+        const userBalance = req.body.userBalance 
         
         var donate = new Donation({
             campaignId:campaignId,
