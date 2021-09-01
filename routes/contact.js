@@ -45,6 +45,38 @@ router.get('/contact/display',(req,res) => {
 	})
 });
 
+router.get("/contact/display/:id",function(req,res){    
+    const id = req.params.id;
+    Contact.findOne({_id:id})
+    .then(function(data){
+        res.status(200).json(data);
+    })
+    .catch(function(err){
+        res.status(500).json({message : err})
+    })
+});
+
+router.put('/contact/update-contact',(req,res) => {
+    const id = req.body.id;
+    const userFirstName = req.body.userFirstName 
+    const userLastName = req.body.userLastName 
+    const userPhoneNumber = req.body.userPhoneNumber
+    const userMessage = req.body.userMessage
+
+    Contact.updateOne({_id:id},{
+      userFirstName : userFirstName,
+      userLastName : userLastName,
+      userPhoneNumber : userPhoneNumber,
+      userMessage : userMessage
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
+    })
+});
+
 router.delete('/contact/delete/:id', function(req,res){
 	const id = req.params.id;
 	Contact.deleteOne({_id: id}).then(function(){

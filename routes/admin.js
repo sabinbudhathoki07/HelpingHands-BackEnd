@@ -81,5 +81,48 @@ router.post('/admin/login',[
 	.catch()
 })
 
+router.get('/admin/display',(req,res) => {
+	Admin.find().then(function(adminDetails){
+		res.send(adminDetails);
+	})
+});
+
+router.get("/admin/display/:id",function(req,res){    
+    const id = req.params.id;
+    Admin.findOne({_id:id})
+    .then(function(data){
+        res.status(200).json(data);
+    })
+    .catch(function(err){
+        res.status(500).json({message : err})
+    })
+});
+
+router.put('/admin/update-admin',(req,res) => {
+	const id = req.body.id;
+	const adminFirstname = req.body.adminFirstname 
+	const adminLastname = req.body.adminLastname 
+	const adminContactNumber = req.body.adminContactNumber
+
+    user.updateOne({_id:id},{
+		adminFirstname : adminFirstname,
+		adminLastname : adminLastname,
+		adminContactNumber : adminContactNumber
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
+router.delete('/admin/delete/:id', function(req,res){
+	const id = req.params.id;
+	Admin.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
+
 
 module.exports = router;

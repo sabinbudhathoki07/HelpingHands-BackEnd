@@ -170,5 +170,30 @@ router.delete('/campaign/delete/:id', function(req,res){
 	})
 })
 
+router.put('/campaign/update-campaign',(req,res) => {
+	const id = req.body.id;
+	const campaignName = req.body.campaignName 
+	const campaignShortDescription = req.body.campaignShortDescription 
+	const campaignGoal = req.body.campaignGoal
+	const campaignDays = req.body.campaignDays
+	const campaignCategories = req.body.campaignCategories
+	const campaignFullDescription = req.body.campaignFullDescription
+
+    Campaign.updateOne({_id:id},{
+		campaignName : campaignName,
+		campaignShortDescription : campaignShortDescription,
+		campaignGoal : campaignGoal,
+		campaignDays : campaignDays,
+		campaignCategories : campaignCategories,
+		campaignFullDescription : campaignFullDescription,
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
 
 module.exports = router;

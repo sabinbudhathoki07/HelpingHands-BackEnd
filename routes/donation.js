@@ -61,6 +61,17 @@ router.get('/donation/display',(req,res) => {
 	})
 });
 
+router.get("/donation/display/:id",function(req,res){    
+    const id = req.params.id;
+    Donation.findOne({_id:id})
+    .then(function(data){
+        res.status(200).json(data);
+    })
+    .catch(function(err){
+        res.status(500).json({message : err})
+    })
+});
+
 router.get("/my-donation/display/:id",function(req,res){    
     const id = req.params.id;
 	console.log(id)
@@ -69,6 +80,33 @@ router.get("/my-donation/display/:id",function(req,res){
 	.then(function(Post){
 		res.send(Post);
 	})
+});
+
+router.put('/donation/update-donation',(req,res) => {
+    const id = req.body.id;
+    const donorAddress1 = req.body.donorAddress1 
+    const donorAddress2 = req.body.donorAddress2 
+    const donorCity = req.body.donorCity
+    const donorPostalCode = req.body.donorPostalCode
+    const donorFullName = req.body.donorFullName
+    const donorEmailAddress = req.body.donorEmailAddress
+    const donorContactNumber = req.body.donorContactNumber
+
+    Donation.updateOne({_id:id},{
+      donorAddress1 : donorAddress1,
+      donorAddress2 : donorAddress2,
+      donorCity : donorCity,
+      donorPostalCode : donorPostalCode,
+      donorFullName : donorFullName,
+      donorEmailAddress : donorEmailAddress,
+      donorContactNumber : donorContactNumber,
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
+    })
 });
 
 router.delete('/donation/delete/:id', function(req,res){

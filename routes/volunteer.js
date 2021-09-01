@@ -19,7 +19,7 @@ router.post('/volunteer/register',upload.single("images"),async (req, res) => {
 			volunteerEmailAddress: req.body.volunteerEmailAddress,
 			volunteerDateOfBirth: req.body.volunteerDateOfBirth,
 			volunteerGender: req.body.volunteerGender,
-			volunteerContactNumber: req.body.volunteerContactNumber,
+			volunteervolunteerNumber: req.body.volunteervolunteerNumber,
 			volunteerAddress: req.body.volunteerAddress,
 			volunteerPostalCode: req.body.volunteerPostalCode,
 			volunteerNationality: req.body.volunteerNationality
@@ -55,6 +55,35 @@ router.get("/volunteer/display/:id",function(req,res){
     })
     .catch(function(err){
         res.status(500).json({message : err})
+    })
+});
+
+router.put('/volunteer/update-volunteer',(req,res) => {
+    const id = req.body.id;
+    const volunteerFullName = req.body.volunteerFullName 
+    const volunteerEmailAddress = req.body.volunteerEmailAddress 
+    const volunteerDateOfBirth = req.body.volunteerDateOfBirth
+    const volunteerGender = req.body.volunteerGender
+    const volunteerContactNumber = req.body.volunteerContactNumber
+    const volunteerAddress = req.body.volunteerAddress
+    const volunteerPostalCode = req.body.volunteerPostalCode
+    const volunteerNationality = req.body.volunteerNationality
+
+    Volunteer.updateOne({_id:id},{
+      volunteerFullName : volunteerFullName,
+      volunteerEmailAddress : volunteerEmailAddress,
+      volunteerDateOfBirth : volunteerDateOfBirth,
+      volunteerGender : volunteerGender,
+      volunteerContactNumber : volunteerContactNumber,
+      volunteerAddress : volunteerAddress,
+      volunteerPostalCode : volunteerPostalCode,
+      volunteerNationality : volunteerNationality
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
     })
 });
 

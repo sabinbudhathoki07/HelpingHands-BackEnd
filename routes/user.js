@@ -205,8 +205,6 @@ router.get('/user/display',(req,res) => {
 	})
 });
 
-
-
 router.put('/user/update-profile',(req,res) => {
 	const id = req.body.id;
 	const userFullName = req.body.userFullName 

@@ -138,5 +138,26 @@ router.delete('/blog/delete/:id', function(req,res){
 	})
 })
 
+router.put('/blog/update-blog',(req,res) => {
+    const id = req.body.id;
+    const blogTitle = req.body.blogTitle 
+    const blogDescription = req.body.blogDescription 
+    const blogDetail = req.body.blogDetail
+    const blogTags = req.body.blogTags
+
+    Blog.updateOne({_id:id},{
+      blogTitle : blogTitle,
+      blogDescription : blogDescription,
+      blogDetail : blogDetail,
+      blogTags : blogTags
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
+    })
+});
+
 
 module.exports = router;

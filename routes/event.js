@@ -144,6 +144,37 @@ router.get('/event/others',(req,res) => {
 	})
 });
 
+router.put('/event/update-event',(req,res) => {
+	const id = req.body.id;
+	const eventName = req.body.eventName 
+	const eventShortDescription = req.body.eventShortDescription 
+	const eventAttendees = req.body.eventAttendees
+	const eventDate = req.body.eventDate
+	const eventMonth = req.body.eventMonth
+	const eventYear = req.body.eventYear
+	const eventCategories = req.body.eventCategories
+	const eventLocation = req.body.eventLocation
+	const eventFullDescription = req.body.eventFullDescription
+
+    Event.updateOne({_id:id},{
+		eventName : eventName,
+		eventShortDescription : eventShortDescription,
+		eventAttendees : eventAttendees,
+		eventDate : eventDate,
+		eventMonth : eventMonth,
+		eventYear : eventYear,
+		eventCategories : eventCategories,
+		eventLocation : eventLocation,
+		eventFullDescription : eventFullDescription,
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
 router.delete('/event/delete/:id', function(req,res){
 	const id = req.params.id;
 	Event.deleteOne({_id: id}).then(function(){
