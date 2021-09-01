@@ -17,12 +17,12 @@ module.exports.sendConfirmationEmail = (userFullName, userEmailAddress, confirma
     .sendMail({
       from: user,
       to: userEmailAddress,
-      subject: "Please confirm your account",
+      subject: "Please Confirm Your Account",
       html: `<h1>Email Confirmation</h1>
         <h2>Hello ${userFullName}</h2>
-        <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=http://localhost:3000/user/confirm/${confirmationCode}> Click here</a>
-        <p>${confirmationCode}</p>
+        <p>Thank You for Creating an Account on Helping Hands. Please Confirm Your Email by Clicking on the Following link</p>
+        <a href=http://helpinghand-backend.herokuapp.com/user/confirm/${confirmationCode}> Click here</a>
+        <p> Your Confirmation Code : <a href=http://helpinghand-backend.herokuapp.com/user/confirm/${confirmationCode}>${confirmationCode}</a></p>
         </div>`,
     })
     .catch((err) => console.log(err));

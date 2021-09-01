@@ -104,7 +104,7 @@ router.put('/admin/update-admin',(req,res) => {
 	const adminLastname = req.body.adminLastname 
 	const adminContactNumber = req.body.adminContactNumber
 
-    user.updateOne({_id:id},{
+    Admin.updateOne({_id:id},{
 		adminFirstname : adminFirstname,
 		adminLastname : adminLastname,
 		adminContactNumber : adminContactNumber
