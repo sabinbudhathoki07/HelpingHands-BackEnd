@@ -144,6 +144,12 @@ router.get('/event/others',(req,res) => {
 	})
 });
 
+router.delete('/event/delete/:id', function(req,res){
+	const id = req.params.id;
+	Event.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 
 module.exports = router;

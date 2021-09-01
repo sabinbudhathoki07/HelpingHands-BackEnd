@@ -131,6 +131,12 @@ router.get("/blog/display/:id",function(req,res){
     })
 });
 
+router.delete('/blog/delete/:id', function(req,res){
+	const id = req.params.id;
+	Blog.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 
 module.exports = router;

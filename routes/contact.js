@@ -39,4 +39,17 @@ router.post('/user/message/insert',
 	}
 });
 
+router.get('/contact/display',(req,res) => {
+	Contact.find().then(function(contactDetails){
+		res.send(contactDetails);
+	})
+});
+
+router.delete('/contact/delete/:id', function(req,res){
+	const id = req.params.id;
+	Contact.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
+
 module.exports = router;

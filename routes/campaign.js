@@ -163,6 +163,12 @@ router.get("/campaign/display/:id",function(req,res){
     })
 });
 
+router.delete('/campaign/delete/:id', function(req,res){
+	const id = req.params.id;
+	Campaign.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 
 module.exports = router;

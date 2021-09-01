@@ -257,4 +257,11 @@ router.get('/my-account/display/:id',(req,res) => {
     })
 });
 
+router.delete('/user/delete/:id', function(req,res){
+	const id = req.params.id;
+	user.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
+
 module.exports = router;

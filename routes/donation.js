@@ -71,5 +71,11 @@ router.get("/my-donation/display/:id",function(req,res){
 	})
 });
 
+router.delete('/donation/delete/:id', function(req,res){
+	const id = req.params.id;
+	Donation.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 module.exports = router;
