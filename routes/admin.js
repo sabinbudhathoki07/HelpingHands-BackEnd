@@ -4,6 +4,7 @@ const Admin = require('../models/admin');
 const bcrypt = require('bcryptjs');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
+const authentication = require('../middleware/authentication');
 
 router.post('/admin/signup',
  (req, res) => {
@@ -44,7 +45,6 @@ router.post('/admin/signup',
 router.post('/admin/login',[
 	check('adminEmailAddress',"Email must be entered").not().isEmpty(),
 	check('adminPassword',"Password must be entered").not().isEmpty(),
-	
 ],function(req,res){
 	const adminEmailAddress = req.body.adminEmailAddress;
 	const adminPassword = req.body.adminPassword;
@@ -67,15 +67,15 @@ router.post('/admin/login',[
 			//res.send("Authenticated")
 
 			//adminEmailAddress and adminPassword valid
-			const token = jwt.sign({adminId:adminModel._id},'secretkey');
+			const adminToken = jwt.sign({adminId:adminModel._id},'secretkey');
          
-			console.log("Token : " + token)
+			console.log("Token : " + adminToken)
 			res.status(200).json({
 				success:true,
-				token: token,
+				adminToken: adminToken,
                 id:adminModel._id
 			})
-			console.log("Login Successfully")
+			console.log("Admin Login Successfully")
 		})
 	})
 	.catch()
@@ -98,7 +98,7 @@ router.get("/admin/display/:id",function(req,res){
     })
 });
 
-router.put('/admin/update-admin',(req,res) => {
+router.put('/admin/update-admin',authentication.verifyAdmin,(req,res) => {
 	const id = req.body.id;
 	const adminFirstname = req.body.adminFirstname 
 	const adminLastname = req.body.adminLastname 
@@ -117,7 +117,7 @@ router.put('/admin/update-admin',(req,res) => {
 	})
 });
 
-router.delete('/admin/delete/:id', function(req,res){
+router.delete('/admin/delete/:id',authentication.verifyAdmin, function(req,res){
 	const id = req.params.id;
 	Admin.deleteOne({_id: id}).then(function(){
 		res.status(200).json({success:true})

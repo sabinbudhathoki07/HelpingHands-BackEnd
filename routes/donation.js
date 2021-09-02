@@ -5,8 +5,9 @@ const bcrypt = require('bcryptjs');
 const User = require("../models/user");
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
+const authentication = require('../middleware/authentication');
 
-router.post('/donate',
+router.post('/donate',authentication.verifyUser,
 (req, res) => {
 	const errors = validationResult(req);
     console.log("Donate")

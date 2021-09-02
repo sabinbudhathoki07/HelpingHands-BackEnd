@@ -41,17 +41,17 @@ router.post("/user/register", function (req, res) {
   });
   
   router.post("/user/login", (req, res) => {
-	const Email = req.body.Email;
-	const Password = req.body.Password;
+	const userEmailAddress = req.body.userEmailAddress;
+	const userPassword = req.body.userPassword;
   
-	user.findOne({ Email: Email }).then(function (userData) {
+	user.findOne({ userEmailAddress: userEmailAddress }).then(function (userData) {
 	  if (userData === null) {
 		//killing the code not giving further access
 		return res
 		  .status(403)
 		  .json({ success: false, message: "Invalid Credentials" });
 	  }
-	  bcrypt.compare(Password, userData.Password, function (err, result) {
+	  bcrypt.compare(userPassword, userData.userPassword, function (err, result) {
 		if (result === false) {
 		  return res
 			.status(201)
