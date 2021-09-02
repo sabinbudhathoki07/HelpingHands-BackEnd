@@ -68,7 +68,8 @@ router.post("/user/register", function (req, res) {
 	});
   });
   
-  router.put("/user/confirm/:confirmationcode", (req, res) => {
+  
+router.put("/user/confirm/:Confirmationcode", (req, res) => {
 	user
 	  .findOne({
 		ConfirmationCode: req.params.confirmationcode,
@@ -77,7 +78,7 @@ router.post("/user/register", function (req, res) {
 		if (data.Status === "Verified") {
 		  return res.status(200).send({ message: "Already Verified" });
 		} else if (!data) {
-		  return res.status(404).send({ message: "user Not Found" });
+		  return res.status(404).send({ message: "User Not Found" });
 		} else if (data) {
 		  user
 			.updateOne(
@@ -98,7 +99,6 @@ router.post("/user/register", function (req, res) {
 		res.status(500).json({ success: false, message: e });
 	  });
   });
-  
   module.exports = router;
 
 
