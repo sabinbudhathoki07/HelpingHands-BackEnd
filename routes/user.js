@@ -72,7 +72,7 @@ router.post("/user/register", function (req, res) {
 router.put("/user/confirm/:Confirmationcode", (req, res) => {
 	user
 	  .findOne({
-		ConfirmationCode: req.params.confirmationcode,
+		ConfirmationCode: req.params.ConfirmationCode,
 	  })
 	  .then(function (data) {
 		if (data.Status === "Verified") {
@@ -82,7 +82,7 @@ router.put("/user/confirm/:Confirmationcode", (req, res) => {
 		} else if (data) {
 		  user
 			.updateOne(
-			  { ConfirmationCode: req.params.confirmationcode },
+			  { ConfirmationCode: req.params.ConfirmationCode },
 			  { Status: "Verified" }
 			)
 			.then(function () {
