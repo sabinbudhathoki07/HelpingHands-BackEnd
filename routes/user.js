@@ -47,23 +47,23 @@ router.post("/user/register", function (req, res) {
 	user.findOne({ userEmailAddress: userEmailAddress }).then(function (userData) {
 	  if (userData === null) {
 		//killing the code not giving further access
-		return res
-		  .status(403)
-		  .json({ success: false, message: "Invalid Credentials" });
+		return res.status(403).json({ message: "Invalid Credentials" });
 	  }
 	  bcrypt.compare(userPassword, userData.userPassword, function (err, result) {
-		if (result === false) {
-		  return res
-			.status(201)
-			.json({ success: false, message: "Invalid Credentials" });
+
+		if (result===false){
+			return	res.status(403).json({
+				message :"Invalid Credentials!! Result False"})
 		}
+		else{
 		//generating token
-		const token = jwt.sign({ userId: userData._id }, "secretkey");
-		res.status(200).json({
-		  success: true,
-		  message: "Logged In Successfully",
-		  token: token,
-		});
+			const token = jwt.sign({ userId: userData._id }, 'secretkey');
+			res.status(200).json({
+			success: true,
+			token: token,
+			id:userData._id
+			});
+		}
 	  });
 	});
   });
