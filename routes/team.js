@@ -19,10 +19,10 @@ router.post("/team/add-member", upload.single("images"), async (req, res) => {
     });
     // Save user
     await teamember.save();
-    res.json(teamember);
-  } catch (err) {
-    console.log(err);
-  }
+      res.json(teamember);
+    } catch (err) {
+      console.log(err);
+    }
 });
 
 
