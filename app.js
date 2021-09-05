@@ -7,15 +7,12 @@ const static_path = path.join(__dirname,'');
 const cors = require('cors');
 app.use(cors());
 
-
-
 // Connect to mongoDB database
 const  env = require('dotenv');
 env.config({
      path:"./env"
 }  
 );
-
 
 connectDB();
 
@@ -24,10 +21,12 @@ const contactRoutes = require('./routes/contact');
 const adminRoutes = require('./routes/admin');
 const volunteerRoutes = require('./routes/volunteer');
 const blogRoutes = require('./routes/blog');
+const teamRoutes = require('./routes/team');
 const campaignRoutes = require('./routes/campaign');
 const eventRoutes = require('./routes/event');
 const donationRoutes = require('./routes/donation');
 const laterRoutes = require('./routes/later');
+
 app.use(express.static(static_path))
 app.use(express.json())
 app.use(userRoutes);
@@ -35,6 +34,7 @@ app.use(adminRoutes);
 app.use(contactRoutes);
 app.use(volunteerRoutes);
 app.use(blogRoutes);
+app.use(teamRoutes);
 app.use(eventRoutes);
 app.use(campaignRoutes);
 app.use(donationRoutes);
@@ -51,6 +51,7 @@ app.use(function (req, res, next) {
 app.get("/", (req, res)=>{
      res.send("Welcome to helping hands");
 })
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
 
