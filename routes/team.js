@@ -5,7 +5,7 @@ const cloudinary = require("../utils/cloudinary");
 const upload = require("../utils/multer");
 
 
-router.post("/team/insert", upload.single("images"), async (req, res) => {
+router.post("/team/add-member", upload.single("images"), async (req, res) => {
   try {
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
@@ -68,7 +68,7 @@ router.delete('/team/delete/:id', function(req,res){
 	})
 })
 
-router.put('/team/update-teamember',(req,res) => {
+router.put('/team/update-team',(req,res) => {
     const id = req.body.id;
     const teamemberName = req.body.teamemberName 
     const teamemberDescription = req.body.teamemberDescription 
