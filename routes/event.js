@@ -72,7 +72,7 @@ router.get("/event/display/:id",function(req,res){
 
 // Event Category Wise
 // Event Category : Entertainment
-router.get('/event/display/entertainment',(req,res) => {
+router.get('/event/entertainment',(req,res) => {
 	var entertainment = { eventCategories: "Entertainment" };
 	Event.find(entertainment)
 	.then(function(Post){
