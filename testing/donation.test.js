@@ -1,9 +1,9 @@
 
 const Donation = require('../models/donation');
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -14,7 +14,7 @@ afterAll(async () => {
 describe('testing the blog page', () => {
 // the code below is for insert testing
  it('Add blog testing anything', () => {
- const Donation = {
+ const donation = {
  'campaignId': 'test@gmail.com',
  'campaignName': 'test',
  'donorFullName': 'test1',
@@ -29,13 +29,10 @@ describe('testing the blog page', () => {
  'donatedDate': '9865628355;', 
 
  }
-
+ return Donation.create(donation)
+ .then((pro_ret) => {
+ expect(pro_ret.campaignId).toEqual('test@gmail.com');
  });
-
- it("contact test anything", () => {
-     const Donation = {
-         'userEmail' : 'test@gmail.com',
-         'userFirstName' : 'test'
-     };
- })
+ });
 })
+ 

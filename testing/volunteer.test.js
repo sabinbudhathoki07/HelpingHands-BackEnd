@@ -14,7 +14,7 @@ afterAll(async () => {
 describe('testing the blog page', () => {
 // the code below is for insert testing
  it('Add blog testing anything', () => {
- const Volunteer = {
+ const volunteer = {
  'volunteerImage': '',
  'volunteerFullName': 'test',
  'volunteerEmailAddress': 'test1@gmail.com',
@@ -27,13 +27,10 @@ describe('testing the blog page', () => {
  'volunteerNationality': 'nepalese;', 
 
  }
-
+ return Volunteer.create(volunteer)
+ .then((pro_ret) => {
+ expect(pro_ret.volunteerFullName).toEqual('test');
  });
-
- it("contact test anything", () => {
-     const Volunteer = {
-         'volunteerFullName' : 'test1',
-         'volunteerEmailAddress' : 'test1@gmail.com'
-     };
- })
-})
+ });
+});
+ 

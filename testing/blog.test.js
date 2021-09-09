@@ -32,12 +32,7 @@ describe('testing the blog page', () => {
  });
  });
 
- it("to find something", () => {
-     const Blog = {
-         'blogdescription' : 'dfghjkl',
-     };
- })
-})
+
 
 it('Find Blog testing anything', () => {
     const blog = {
@@ -75,6 +70,7 @@ it('to test the update  Blog', async () => {
             })
             
            });
+        });
 
    
     

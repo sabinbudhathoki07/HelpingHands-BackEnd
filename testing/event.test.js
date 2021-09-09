@@ -1,9 +1,9 @@
 
-const user = require('../models/user');
+const Event = require('../models/event');
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -29,13 +29,10 @@ describe('testing the blog page', () => {
 'eventPostDtae': "20202547",
  
 }
-
+ return Event.create(event)
+ .then((pro_ret) => {
+ expect(pro_ret.eventName).toEqual('test');
  });
-
- it("contact test anything", () => {
-     const event = {
-         'eventName' : 'test',
-         'eventAttendees' : 'testt'
-     };
- })
-})
+ });
+});
+ 

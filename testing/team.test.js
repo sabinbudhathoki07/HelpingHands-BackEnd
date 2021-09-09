@@ -1,8 +1,8 @@
 const Team = require('../models/team');
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -10,22 +10,19 @@ beforeAll(async () => {
 afterAll(async () => {
  await mongoose.connection.close();
 });
-describe('testing the blog page', () => {
+describe('testing the team page', () => {
 // the code below is for insert testing
- it('Add blog testing anything', () => {
+ it('Add team testing anything', () => {
  const team = {
  'teamemberImage': '',
  'teamemberName': 'test',
  'teamemberDescription': 'test1test2test3',
- 'teamemberRegisteredDate': 'testt',
 }
-
+return Team.create(team)
+ .then((pro_ret) => {
+ expect(pro_ret.teamemberName).toEqual('test');
  });
+ });
+});
+ 
 
- it("contact test anything", () => {
-     const Team = {
-         'teamemberImage' : 'test',
-         'teamemberName' : 'testt'
-     };
- })
-})
