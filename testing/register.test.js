@@ -16,7 +16,7 @@ describe('User Schema test anything', () => {
  const user = {
  'userEmailAddress': 'bipishadahal@gmail.com',
  'userPassword': 'sabin123',
- 'userFullName' : 'bipisha dahal',
+ 'userFullName' : 'sabin budhathoki',
  'userContactNumber' : '9876543210'
 
  };

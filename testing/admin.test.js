@@ -15,29 +15,29 @@ describe('Admin Schema test anything', () => {
 // the code below is for insert testing
  it('Add admin testing anything',()=> {
  const admin = {
- 'adminEmailAddress': 'bipishadahal@gmail.com',
+ 'adminEmailAddress': 'testingsabin@gmail.com',
  'adminPassword': 'sabin123',
- 'adminFirstname' : 'bipisha dahal',
+ 'adminFirstname' : 'Sabin Budhathoki',
  'adminContactNumber' : '9876543210'
 
  };
  
  return Admin.create(admin)
  .then((pro_ret) => {
- expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+ expect(pro_ret.adminEmailAddress).toEqual('testingsabin@gmail.com');
  });
  });
 
-it('Add Admin testing anything', () => {
+it('Login Admin testing anything', () => {
     const admin = {
-    'adminEmailAddress': 'bipishadahal@gmail.com',
+    'adminEmailAddress': 'testingsabin@gmail.com',
     'adminPassword': 'sabin123',
     
     };
     
     return Admin.findOne(admin)
     .then((pro_ret) => {
-    expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+    expect(pro_ret.adminEmailAddress).toEqual('testingsabin@gmail.com');
     expect(pro_ret.adminPassword).toEqual('sabin123');
    });
    });
@@ -48,36 +48,35 @@ it('Add Admin testing anything', () => {
 it('Find Admin testing anything', () => {
     const admin = {
     
-        adminEmailAddress:'bipishadahal@gmail.com',
+        adminEmailAddress:'testingsabin@gmail.com',
       
 
     };
     
     return Admin.findOne(admin)
     .then((pro_ret) => {
-    expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+    expect(pro_ret.adminEmailAddress).toEqual('testingsabin@gmail.com');
     });
     });
 
 it('to test the update  Admin', async () => {
-            return Admin.findByIdAndUpdate({_id :Object('6139a52c25f63910a0ff9983')}, 
+            return Admin.findByIdAndUpdate({_id :Object('6139ad554250f113d8d9b3f1')}, 
            {$set : {
-            adminEmailAddress:'bipishadahal1@gmail.com',
+            adminEmailAddress:'bipishadahal2@gmail.com',
                    
                    }})
             .then((pp)=>{
-            expect(pp.adminEmailAddress).toEqual('bipishadahal@gmail.com')
+            expect(pp.adminEmailAddress).toEqual('bipishadahal1@gmail.com')
         
             })
-            
            });
     
     
            it('to test the delete  Admin', async () => {
-            return Admin.findOneAndDelete({_id :Object('6139a52c25f63910a0ff9983')}, 
-           {$set : {adminEmailAddress:"bipishadahal1@gmail.com"}})
+            return Admin.findOneAndDelete({_id :Object('6139ac90e3e35b10bc4bd6a0')}, 
+           {$set : {adminEmailAddress:"bipishadahal@gmail.com"}})
             .then((pp)=>{
-            expect(pp.adminEmailAddress).toEqual('bipishadahal1@gmail.com')
+            expect(pp.adminEmailAddress).toEqual('bipishadahal@gmail.com')
             })
             
            });
