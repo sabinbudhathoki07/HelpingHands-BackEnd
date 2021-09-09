@@ -9,6 +9,7 @@ const Campaign = mongoose.model('Campaign', {
      campaignName: { type: String, require :true},
      campaignShortDescription: { type: String, require :true},
      campaignGoal: { type: String,require:true},
+     campaignCollected: { type: Number, default:0},
      campaignDays: { type: String,require:true},
      campaignCategories: { type: String,require:true},
      campaignTags: { type: String,require:true},

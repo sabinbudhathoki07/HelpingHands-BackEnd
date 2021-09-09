@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
+const authentication = require('../middleware/authentication');
 const user = require("../models/user");
 const jwt = require("jsonwebtoken");
 const userconfig = require("../config/user.config");
@@ -233,6 +233,27 @@ router.put('/user/load-balance',(req,res) => {
 	console.log("Your New Balance Amount: " + Balance)
 
     user.updateOne({_id:id},{
+		userBalance : Balance
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
+router.put('/user/deduct-balance',(req,res) => {
+	const userId = req.body.userId;
+	const userBalance = req.body.userBalance 
+	const donorDonated = req.body.donorDonated 
+	const Balance = parseInt(userBalance) - parseInt(donorDonated)
+
+	console.log("Deduct-Balance of Id : " + userId)
+	console.log("Deduct-Balance Amount : " + req.body.donorDonated)
+	console.log("Your New Balance Amount: " + Balance)
+
+    user.updateOne({_id:userId},{
 		userBalance : Balance
 	})
 	.then(function(result){

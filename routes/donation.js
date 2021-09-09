@@ -7,7 +7,7 @@ const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
 const authentication = require('../middleware/authentication');
 
-router.post('/donate',authentication.verifyUser,
+router.post('/donate',
 (req, res) => {
 	const errors = validationResult(req);
     console.log("Donate")
@@ -27,7 +27,6 @@ router.post('/donate',authentication.verifyUser,
         const donorPostalCode = req.body.donorPostalCode;
         const donorDonated = req.body.donorDonated;
         const donatedBy = req.body.donatedBy;
-        const userBalance = req.body.userBalance 
         
         var donate = new Donation({
             campaignId:campaignId,
@@ -40,7 +39,7 @@ router.post('/donate',authentication.verifyUser,
             donatedBy: donatedBy,
             donorCity: donorCity,
             donorPostalCode: donorPostalCode,
-            donorDonated: donorDonated,
+            donorDonated: donorDonated
         });
         donate.save()
         .then(function(data){

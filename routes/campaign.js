@@ -195,5 +195,28 @@ router.put('/campaign/update-campaign',(req,res) => {
 	})
 });
 
+router.put('/campaign/received-donation',(req,res) => {
+	const id = req.body.id;
+	const userId = req.body.userId;
+	const campaignCollected = req.body.campaignCollected 
+	const donorDonated = req.body.donorDonated 
+	const Collected = parseInt(campaignCollected) + parseInt(donorDonated)
+
+	console.log("Donation received for Id : " + userId)
+	console.log("Donation received from Id : " + id)
+	console.log("Receiced Amount for Campaign : " + req.body.userNewBalance)
+	console.log("Total Amount Received : " + Collected)
+
+    Campaign.updateOne({_id:id},{
+		campaignCollected : Collected
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
 
 module.exports = router;
