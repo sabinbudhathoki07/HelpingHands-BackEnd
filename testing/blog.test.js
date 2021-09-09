@@ -1,9 +1,9 @@
 
 const Blog = require('../models/blog');
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -14,9 +14,9 @@ afterAll(async () => {
 describe('testing the blog page', () => {
 // the code below is for insert testing
  it('Add blog testing anything', () => {
- const Blog = {
+ const blog = {
  'blogImage': '',
- 'blogTitle': 'abc',
+ 'blogTitle': 'abcde',
  'blogDescription': 'dfghjkl',
  'blogDetail': 'test3sdfghjkl',
  'blogTags': 'test4dfghjkl;',
@@ -26,10 +26,10 @@ describe('testing the blog page', () => {
 
 
  
-//  return blog.create(blog)
-//  .then((pro_ret) => {
-//  expect(pro_ret.blogDescription).toEqual('dfghjkl');
-//  });
+ return Blog.create(blog)
+ .then((pro_ret) => {
+ expect(pro_ret.blogDescription).toEqual('dfghjkl');
+ });
  });
 
  it("to find something", () => {
@@ -38,3 +38,27 @@ describe('testing the blog page', () => {
      };
  })
 })
+
+it('to test the update  product', async () => {
+            return Blog.findByIdAndUpdate({_id :Object('6139a04900dda011fc4cf562')}, 
+           {$set : {
+            blogTitle:'abcd',
+                   
+                   }})
+            .then((pp)=>{
+            expect(pp.blogTitle).toEqual('abc')
+        
+            })
+            
+           });
+    
+    
+           it('to test the delete  product', async () => {
+            return Blog.findOneAndDelete({_id :Object('6139a131fba2c30bb876ad8a')}, 
+           {$set : {blogTitle:"abcde"}})
+            .then((pp)=>{
+            expect(pp.blogTitle).toEqual('abcde')
+            })
+            
+           });
+    

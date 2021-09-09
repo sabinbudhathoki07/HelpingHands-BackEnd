@@ -1,8 +1,9 @@
 
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const Admin = require('../models/admin');
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -10,25 +11,34 @@ beforeAll(async () => {
 afterAll(async () => {
  await mongoose.connection.close();
 });
-describe('testing the admin page', () => {
+describe('Admin Schema test anything', () => {
 // the code below is for insert testing
- it(' admin testing anything', () => {
- const Admin = {
- 'adminFirstname': 'test',
- 'adminLastname': 'testtest',
- 'adminEmailAddress': 'test1test2test3',
- 'adminContactNumber': 'testt',
- 'adminPassword': '12/01/2021', 
+ it('Add admin testing anything',()=> {
+ const admin = {
+ 'adminEmailAddress': 'bipishadahal@gmail.com',
+ 'adminPassword': 'sabin123',
+ 'adminFirstname' : 'bipisha dahal',
+ 'adminContactNumber' : '9876543210'
 
+ };
  
-}
-
+ return Admin.create(admin)
+ .then((pro_ret) => {
+ expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+ });
  });
 
- it("admin test anything", () => {
-     const Admin = {
-         'adminFirstname' : 'test',
-         'adminLastname' : 'testtest'
-     };
- })
-})
+it('Add Admin testing anything', () => {
+    const admin = {
+    'adminEmailAddress': 'bipishadahal@gmail.com',
+    'adminPassword': 'sabin123',
+    
+    };
+    
+    return Admin.findOne(admin)
+    .then((pro_ret) => {
+    expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+    expect(pro_ret.adminPassword).toEqual('sabin123');
+   });
+   });
+   })
