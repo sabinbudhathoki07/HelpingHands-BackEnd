@@ -10,20 +10,20 @@ beforeAll(async () => {
 afterAll(async () => {
  await mongoose.connection.close();
 });
-describe('user Schema test anything', () => {
+describe('User Schema test anything', () => {
 // the code below is for insert testing
- it('Add user testing anything', () => {
- const User = {
- 'userEmailAddress': 'test3@gmail.com',
- 'userPassword': 'test3',
- 'userFullName' : 'dilip poudel',
- 'userContactNumber' : '9862052925'
+ it('Add user testing anything',()=> {
+ const user = {
+ 'userEmailAddress': 'test661@gmail.com',
+ 'userPassword': 'test32',
+ 'userFullName' : 'dilips poudels',
+ 'userContactNumber' : '987678876'
 
  };
  
-//  return User.create(user)
-//  .then((pro_ret) => {
-//  expect(pro_ret.userEmailAddress).toEqual('test3@gmail.com');
-//  });
+ return User.create(user)
+ .then((pro_ret) => {
+ expect(pro_ret.userEmailAddress).toEqual('test661@gmail.com');
+ });
  });
 })
