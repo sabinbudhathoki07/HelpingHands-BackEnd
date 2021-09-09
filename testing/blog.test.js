@@ -39,26 +39,42 @@ describe('testing the blog page', () => {
  })
 })
 
-it('to test the update  product', async () => {
+it('Find Blog testing anything', () => {
+    const blog = {
+    
+        blogTitle:'abcde',
+      
+
+    };
+    
+    return Blog.findOne(blog)
+    .then((pro_ret) => {
+    expect(pro_ret.blogTitle).toEqual('abcde');
+    });
+    });
+
+it('to test the update  Blog', async () => {
             return Blog.findByIdAndUpdate({_id :Object('6139a04900dda011fc4cf562')}, 
            {$set : {
-            blogTitle:'abcd',
+            blogTitle:'abcde1',
                    
                    }})
             .then((pp)=>{
-            expect(pp.blogTitle).toEqual('abc')
+            expect(pp.blogTitle).toEqual('abcd')
         
             })
             
            });
     
     
-           it('to test the delete  product', async () => {
-            return Blog.findOneAndDelete({_id :Object('6139a131fba2c30bb876ad8a')}, 
-           {$set : {blogTitle:"abcde"}})
+           it('to test the delete  Blog', async () => {
+            return Blog.findOneAndDelete({_id :Object('6139a04900dda011fc4cf562')}, 
+           {$set : {blogTitle:"abcde1"}})
             .then((pp)=>{
-            expect(pp.blogTitle).toEqual('abcde')
+            expect(pp.blogTitle).toEqual('abcde1')
             })
             
            });
+
+   
     

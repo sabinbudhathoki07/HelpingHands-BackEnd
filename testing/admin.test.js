@@ -42,3 +42,45 @@ it('Add Admin testing anything', () => {
    });
    });
    })
+
+
+   
+it('Find Admin testing anything', () => {
+    const admin = {
+    
+        adminEmailAddress:'bipishadahal@gmail.com',
+      
+
+    };
+    
+    return Admin.findOne(admin)
+    .then((pro_ret) => {
+    expect(pro_ret.adminEmailAddress).toEqual('bipishadahal@gmail.com');
+    });
+    });
+
+it('to test the update  Admin', async () => {
+            return Admin.findByIdAndUpdate({_id :Object('6139a52c25f63910a0ff9983')}, 
+           {$set : {
+            adminEmailAddress:'bipishadahal1@gmail.com',
+                   
+                   }})
+            .then((pp)=>{
+            expect(pp.adminEmailAddress).toEqual('bipishadahal@gmail.com')
+        
+            })
+            
+           });
+    
+    
+           it('to test the delete  Admin', async () => {
+            return Admin.findOneAndDelete({_id :Object('6139a52c25f63910a0ff9983')}, 
+           {$set : {adminEmailAddress:"bipishadahal1@gmail.com"}})
+            .then((pp)=>{
+            expect(pp.adminEmailAddress).toEqual('bipishadahal1@gmail.com')
+            })
+            
+           });
+
+   
+    
