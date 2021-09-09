@@ -16,7 +16,7 @@ describe('campaign the blog page', () => {
  it('Add campaign testing anything', () => {
  const campaign = {
  'campaignImage': '',
- 'campaignName': 'abc',
+ 'campaignName': 'sabin',
  'campaignShortDescription': 'dfghjkl',
  'campaignGoal': 'test3sdfghjkl',
  'campaignCategories': 'test3sdfghjkl',
@@ -32,7 +32,7 @@ describe('campaign the blog page', () => {
 
  return Campaign.create(campaign)
  .then((pro_ret) => {
- expect(pro_ret.campaignName).toEqual('abc');
+ expect(pro_ret.campaignName).toEqual('sabin');
  });
  });
  });
@@ -40,25 +40,25 @@ describe('campaign the blog page', () => {
  it('Find Single campaign name testing anything', () => {
     const campaign = {
     
-        campaignName:'abc',
+        campaignName:'sabin',
       
 
     };
     
     return Campaign.findOne(campaign)
     .then((pro_ret) => {
-    expect(pro_ret.campaignName).toEqual('abc');
+    expect(pro_ret.campaignName).toEqual('sabin');
     });
     });
 
     it('to test the update  Campaign', async () => {
-        return Campaign.findByIdAndUpdate({_id :Object('6139a04900dda011fc4cf562')}, 
+        return Campaign.findByIdAndUpdate({_id :Object('613a0d3ab04d902410f7625d')}, 
        {$set : {
-        campaignName:'abcde1',
+        campaignName:'sabinbudhathoki',
                
                }})
         .then((pp)=>{
-        expect(pp.campaignName).toEqual('abcd')
+        expect(pp.campaignName).toEqual('sabin')
     
         })
         
@@ -66,10 +66,10 @@ describe('campaign the blog page', () => {
 
 
        it('to test the delete  Campaign', async () => {
-        return Campaign.findOneAndDelete({_id :Object('6139a4c1f0d7cd07601b0aa6')}, 
-       {$set : {campaignName:"abcde1"}})
+        return Campaign.findOneAndDelete({_id :Object('613a0d3ab04d902410f7625d')}, 
+       {$set : {campaignName:"sabinbudhathoki"}})
         .then((pp)=>{
-        expect(pp.campaignName).toEqual('abcde1')
+        expect(pp.campaignName).toEqual('sabinbudhathoki')
         })
         
        });

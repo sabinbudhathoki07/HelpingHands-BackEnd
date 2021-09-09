@@ -17,7 +17,7 @@ describe('testing the volunteer page', () => {
  const volunteer = {
  'volunteerImage': '',
  'volunteerFullName': 'test',
- 'volunteerEmailAddress': 'testsabin@gmail.com',
+ 'volunteerEmailAddress': 'testsabin07@gmail.com',
  'volunteerGender': 'male;', 
  'volunteerContactNumber': '896542634',
  'volunteerAddress': 'test',

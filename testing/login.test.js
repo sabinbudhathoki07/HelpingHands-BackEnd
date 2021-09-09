@@ -15,14 +15,14 @@ describe('User Schema test anything', () => {
 // the code below is for insert testing
  it('Add User testing anything', () => {
  const user = {
- 'userEmailAddress': 'bipishadahal@gmail.com',
+ 'userEmailAddress': 'sabinbudhathoki07@gmail.com',
  'userPassword': 'sabin123',
  
  };
  
  return User.findOne(user)
  .then((pro_ret) => {
- expect(pro_ret.userEmailAddress).toEqual('bipishadahal@gmail.com');
+ expect(pro_ret.userEmailAddress).toEqual('sabinbudhathoki07@gmail.com');
  expect(pro_ret.userPassword).toEqual('sabin123');
 });
 });

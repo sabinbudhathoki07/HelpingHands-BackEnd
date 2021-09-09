@@ -60,23 +60,23 @@ it('Find Admin testing anything', () => {
     });
 
 it('to test the update  Admin', async () => {
-            return Admin.findByIdAndUpdate({_id :Object('6139ad554250f113d8d9b3f1')}, 
+            return Admin.findByIdAndUpdate({_id :Object('613a0c4a818d822fa866ed96')}, 
            {$set : {
-            adminEmailAddress:'bipishadahal2@gmail.com',
+            adminEmailAddress:'testingsabin2@gmail.com',
                    
                    }})
             .then((pp)=>{
-            expect(pp.adminEmailAddress).toEqual('bipishadahal1@gmail.com')
+            expect(pp.adminEmailAddress).toEqual('testingsabin@gmail.com')
         
             })
            });
     
     
            it('to test the delete  Admin', async () => {
-            return Admin.findOneAndDelete({_id :Object('6139ac90e3e35b10bc4bd6a0')}, 
-           {$set : {adminEmailAddress:"bipishadahal@gmail.com"}})
+            return Admin.findOneAndDelete({_id :Object('613a0c4a818d822fa866ed96')}, 
+           {$set : {adminEmailAddress:"testingsabin2@gmail.com"}})
             .then((pp)=>{
-            expect(pp.adminEmailAddress).toEqual('bipishadahal@gmail.com')
+            expect(pp.adminEmailAddress).toEqual('testingsabin2@gmail.com')
             })
             
            });

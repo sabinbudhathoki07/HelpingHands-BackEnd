@@ -14,7 +14,7 @@ describe('User Schema test anything', () => {
 // the code below is for insert testing
  it('Add user testing anything',()=> {
  const user = {
- 'userEmailAddress': 'bipishadahal@gmail.com',
+ 'userEmailAddress': 'kirankarki026@gmail.com',
  'userPassword': 'sabin123',
  'userFullName' : 'sabin budhathoki',
  'userContactNumber' : '9876543210'
@@ -23,7 +23,7 @@ describe('User Schema test anything', () => {
  
  return User.create(user)
  .then((pro_ret) => {
- expect(pro_ret.userEmailAddress).toEqual('bipishadahal@gmail.com');
+ expect(pro_ret.userEmailAddress).toEqual('kirankarki026@gmail.com')
  });
  });
 })
@@ -31,25 +31,25 @@ describe('User Schema test anything', () => {
 it('Find user testing anything', () => {
     const user = {
     
-        userEmailAddress:'bipishadahal@gmail.com',
+        userEmailAddress:'kirankarki026@gmail.com',
       
 
     };
     
     return User.findOne(user)
     .then((pro_ret) => {
-    expect(pro_ret.userEmailAddress).toEqual('bipishadahal@gmail.com');
+    expect(pro_ret.userEmailAddress).toEqual('kirankarki026@gmail.com')
     });
     });
 
 it('to test the update  User', async () => {
-            return User.findByIdAndUpdate({_id :Object('6139a52c25f63910a0ff9983')}, 
+            return User.findByIdAndUpdate({_id :Object('6139c7e0fd3d6c001631cbac')}, 
            {$set : {
-            userEmailAddress:'bipishadahal1@gmail.com',
+            userEmailAddress:'ujwalbudhathoki009@gmail.com',
                    
                    }})
             .then((pp)=>{
-            expect(pp.userEmailAddress).toEqual('bipishadahal@gmail.com')
+            expect(pp.userEmailAddress).toEqual('ujwalbudhathoki9@gmail.com')
         
             })
             
@@ -57,10 +57,10 @@ it('to test the update  User', async () => {
     
     
            it('to test the delete  User', async () => {
-            return User.findOneAndDelete({_id :Object('6139a52c25f63910a0ff9983')}, 
-           {$set : {userEmailAddress:"bipishadahal1@gmail.com"}})
+            return User.findOneAndDelete({_id :Object('6139c7e0fd3d6c001631cbac')}, 
+           {$set : {userEmailAddress:"ujwalbudhathoki009@gmail.com"}})
             .then((pp)=>{
-            expect(pp.userEmailAddress).toEqual('bipishadahal1@gmail.com')
+            expect(pp.userEmailAddress).toEqual('ujwalbudhathoki009@gmail.com')
             })
             
            });

@@ -44,7 +44,7 @@ it('Find single contact testing anything', () => {
     });
 
     it('to test the update  contact', async () => {
-        return Contact.findByIdAndUpdate({_id :Object('6139a04900dda011fc4cf562')}, 
+        return Contact.findByIdAndUpdate({_id :Object('613a0d731d7ae314d060b4f0')}, 
        {$set : {
         userEmail:'test1@gmail.com',
                
@@ -58,7 +58,7 @@ it('Find single contact testing anything', () => {
 
 
        it('to test the delete  contact', async () => {
-        return Contact.findOneAndDelete({_id :Object('6139a4c1f0d7cd07601b0aa6')}, 
+        return Contact.findOneAndDelete({_id :Object('613a0d731d7ae314d060b4f0')}, 
        {$set : {userEmail:"test1@gmail.com"}})
         .then((pp)=>{
         expect(pp.userEmail).toEqual('test1@gmail.com')

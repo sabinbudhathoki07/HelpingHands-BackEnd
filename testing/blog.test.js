@@ -16,7 +16,7 @@ describe('testing the blog page', () => {
  it('Add blog testing anything', () => {
  const blog = {
  'blogImage': '',
- 'blogTitle': 'abcde',
+ 'blogTitle': 'sabin',
  'blogDescription': 'dfghjkl',
  'blogDetail': 'test3sdfghjkl',
  'blogTags': 'test4dfghjkl;',
@@ -37,41 +37,40 @@ describe('testing the blog page', () => {
 it('Find Blog testing anything', () => {
     const blog = {
     
-        blogTitle:'abcde',
+        blogTitle:'sabin',
       
 
     };
     
     return Blog.findOne(blog)
     .then((pro_ret) => {
-    expect(pro_ret.blogTitle).toEqual('abcde');
+    expect(pro_ret.blogTitle).toEqual('sabin');
     });
     });
 });
 
-// it('to test the update  Blog', async () => {
-//             return Blog.findByIdAndUpdate({_id :Object('6139a04900dda011fc4cf562')}, 
-//            {$set : {
-//             blogTitle:'abcde1',
+it('to test the update  Blog', async () => {
+            return Blog.findByIdAndUpdate({_id :Object('613a0ccde32cac31f893c192')}, 
+           {$set : {
+            blogTitle:'sabinbudhathoki',
                    
-//                    }})
-//             .then((pp)=>{
-//             expect(pp.blogTitle).toEqual('abcd')
+                   }})
+            .then((pp)=>{
+            expect(pp.blogTitle).toEqual('sabin')
         
-//             })
+            })
             
-//            });
+           });
     
     
-//            it('to test the delete  Blog', async () => {
-//             return Blog.findOneAndDelete({_id :Object('6139a04900dda011fc4cf562')}, 
-//            {$set : {blogTitle:"abcde1"}})
-//             .then((pp)=>{
-//             expect(pp.blogTitle).toEqual('abcde1')
-//             })
+           it('to test the delete  Blog', async () => {
+            return Blog.findOneAndDelete({_id :Object('613a0ccde32cac31f893c192')}, 
+           {$set : {blogTitle:"sabinbudhathoki"}})
+            .then((pp)=>{
+            expect(pp.blogTitle).toEqual('sabinbudhathoki')
+            })
             
-//            });
-//         });
-
+           });
+ 
    
     
