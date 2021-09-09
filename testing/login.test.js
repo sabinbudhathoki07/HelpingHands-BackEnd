@@ -1,9 +1,9 @@
 
 const User = require('../models/user')
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
+const MONGO_URI = 'mongodb+srv://admin:admin@helpinghands.mfykl.mongodb.net/helpinghands?retryWrites=true&w=majority';
 beforeAll(async () => {
- await mongoose.connect(url, {
+ await mongoose.connect(MONGO_URI, {
  useNewUrlParser: true,
  useCreateIndex: true
  });
@@ -11,17 +11,20 @@ beforeAll(async () => {
 afterAll(async () => {
  await mongoose.connection.close();
 });
-describe('user Schema test anything', () => {
+describe('User Schema test anything', () => {
 // the code below is for insert testing
- it('Add user testing anything', () => {
+ it('Add User testing anything', () => {
  const user = {
- 'userEmailAddress': 'test3@gmail.com',
- 'userPassword': 'test3',
+ 'userEmailAddress': 'bipishadahal@gmail.com',
+ 'userPassword': 'sabin123',
  
  };
  
-//  return User.create(user)
-//  .then((pro_ret) => {
-//  expect(pro_ret.userEmailAddress).toEqual('testing3 ');
- });
- });
+ return User.findOne(user)
+ .then((pro_ret) => {
+ expect(pro_ret.userEmailAddress).toEqual('bipishadahal@gmail.com');
+ expect(pro_ret.userPassword).toEqual('sabin123');
+});
+});
+})
+
