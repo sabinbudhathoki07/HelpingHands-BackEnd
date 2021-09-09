@@ -1,5 +1,5 @@
 
-const user = require('../models/user');
+const User = require('../models/user')
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
 beforeAll(async () => {
@@ -20,7 +20,7 @@ describe('user Schema test anything', () => {
  
  };
  
-//  return user.create(user)
+//  return User.create(user)
 //  .then((pro_ret) => {
 //  expect(pro_ret.userEmailAddress).toEqual('testing3 ');
  });

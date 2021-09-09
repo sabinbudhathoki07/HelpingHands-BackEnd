@@ -2,69 +2,37 @@ const express = require('express');
 const router = express.Router();
 const Event = require('../models/event');
 const bcrypt = require('bcryptjs');
-const event = require('../middleware/uploadsEvent');
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../utils/multer");
 
 //Event Register
-router.post('/event/insert',event.single('eventImage'),(req, res) => {
-	console.log("Entered Event Insert Route");
-	const errors = validationResult(req);
-
-	if(!errors.isEmpty()){
-		var error = errors.array();
-		return res.status(400).json(error);
-	}
-	else{
-		if(req.file==undefined){
-			console.log("\nInvalid Event Picture Format");
-            return res.status(500).json("Invalid Event Picture Image Format");
-        }
-		const eventImage = req.file.filename;
-		const eventName = req.body.eventName;
-		const eventShortDescription = req.body.eventShortDescription;
-		const eventAttendees = req.body.eventAttendees;
-		const eventDate = req.body.eventDate;
-		const eventMonth = req.body.eventMonth;
-		const eventYear = req.body.eventYear;
-		const eventCategories = req.body.eventCategories;
-		const eventLocation = req.body.eventLocation;
-		const eventFullDescription = req.body.eventFullDescription;
-		const eventPostedBy = req.body.eventPostedBy;
-		
-
-
-		var Post = new Event({
-			eventImage: eventImage,
-			eventName: eventName,
-			eventShortDescription: eventShortDescription,
-			eventAttendees: eventAttendees,
-			eventDate: eventDate,
-			eventMonth: eventMonth,
-			eventYear: eventYear,
-			eventCategories: eventCategories,
-			eventLocation: eventLocation,
-			eventFullDescription: eventFullDescription,
-			eventPostedBy : eventPostedBy,
+router.post('/event/insert',upload.single("images"),async (req, res) => {
+	try {
+	  // Upload image to cloudinary
+	  const result = await cloudinary.uploader.upload(req.file.path);
+	  
+		let EventDetails = new Event({
+			eventImage: result.secure_url,
+			eventName: req.body.eventName,
+			eventShortDescription: req.body.eventShortDescription,
+			eventAttendees: req.body.eventAttendees,
+			eventDate: req.body.eventDate,
+			eventMonth: req.body.eventMonth,
+			eventYear:  req.body.eventYear,
+			eventCategories: req.body.eventCategories,
+			eventLocation: req.body.eventLocation,
+			eventFullDescription: req.body.eventFullDescription,
+			eventPostedBy : req.body.eventPostedBy,
 			
 		});
-				
-	    Post.save()
-		.then(function(data){
-			res.status(201).json({ 
-				success: true, message : "Event Added"
-			})
-			console.log("Event Added");
-			console.log(Post);
-		})
-		.catch(function(error){
-			res.status(500).json({
-				message: "Event Addition Failed"
-			})
-			console.log(error);
-			console.log("Event Addition Failed");
-		});
-	}
+
+		await EventDetails.save();
+		res.json(EventDetails);
+		} catch (err) {
+		console.log(err);
+		}
 });
 
 router.get('/event/display',(req,res) => {
@@ -104,7 +72,7 @@ router.get("/event/display/:id",function(req,res){
 
 // Event Category Wise
 // Event Category : Entertainment
-router.get('/event/display/entertainment',(req,res) => {
+router.get('/event/entertainment',(req,res) => {
 	var entertainment = { eventCategories: "Entertainment" };
 	Event.find(entertainment)
 	.then(function(Post){
@@ -113,7 +81,7 @@ router.get('/event/display/entertainment',(req,res) => {
 });
 
 // Event Category : Social
-router.get('/event/display/social',(req,res) => {
+router.get('/event/social',(req,res) => {
 	var social = { eventCategories: "Social" };
 	Event.find(social)
 	.then(function(Post){
@@ -122,7 +90,7 @@ router.get('/event/display/social',(req,res) => {
 });
 
 // Event Category : Sports
-router.get('/event/display/sports',(req,res) => {
+router.get('/event/sports',(req,res) => {
 	var sports = { eventCategories: "Sports" };
 	Event.find(sports)
 	.then(function(Post){
@@ -130,8 +98,9 @@ router.get('/event/display/sports',(req,res) => {
 	})
 });
 
+
 // Event Category : Religious
-router.get('/event/display/religious',(req,res) => {
+router.get('/event/religious',(req,res) => {
 	var religious = { eventCategories: "Religious" };
 	Event.find(religious)
 	.then(function(Post){
@@ -140,7 +109,7 @@ router.get('/event/display/religious',(req,res) => {
 });
 
 // Event Category : Educational
-router.get('/event/display/educational',(req,res) => {
+router.get('/event/educational',(req,res) => {
 	var educational = { eventCategories: "Educational" };
 	Event.find(educational)
 	.then(function(Post){
@@ -149,7 +118,7 @@ router.get('/event/display/educational',(req,res) => {
 });
 
 // Event Category : Political
-router.get('/event/display/political',(req,res) => {
+router.get('/event/political',(req,res) => {
 	var political = { eventCategories: "Political" };
 	Event.find(political)
 	.then(function(Post){
@@ -158,7 +127,7 @@ router.get('/event/display/political',(req,res) => {
 });
 
 // Event Category : Charitable
-router.get('/event/display/charitable',(req,res) => {
+router.get('/event/charitable',(req,res) => {
 	var charitable = { eventCategories: "Charitable" };
 	Event.find(charitable)
 	.then(function(Post){
@@ -167,7 +136,7 @@ router.get('/event/display/charitable',(req,res) => {
 });
 
 // Event Category : Others
-router.get('/event/display/others',(req,res) => {
+router.get('/event/others',(req,res) => {
 	var others = { eventCategories: "Others" };
 	Event.find(others)
 	.then(function(Post){
@@ -175,6 +144,43 @@ router.get('/event/display/others',(req,res) => {
 	})
 });
 
+router.put('/event/update-event',(req,res) => {
+	const id = req.body.id;
+	const eventName = req.body.eventName 
+	const eventShortDescription = req.body.eventShortDescription 
+	const eventAttendees = req.body.eventAttendees
+	const eventDate = req.body.eventDate
+	const eventMonth = req.body.eventMonth
+	const eventYear = req.body.eventYear
+	const eventCategories = req.body.eventCategories
+	const eventLocation = req.body.eventLocation
+	const eventFullDescription = req.body.eventFullDescription
+
+    Event.updateOne({_id:id},{
+		eventName : eventName,
+		eventShortDescription : eventShortDescription,
+		eventAttendees : eventAttendees,
+		eventDate : eventDate,
+		eventMonth : eventMonth,
+		eventYear : eventYear,
+		eventCategories : eventCategories,
+		eventLocation : eventLocation,
+		eventFullDescription : eventFullDescription,
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
+	})
+});
+
+router.delete('/event/delete/:id', function(req,res){
+	const id = req.params.id;
+	Event.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 
 module.exports = router;

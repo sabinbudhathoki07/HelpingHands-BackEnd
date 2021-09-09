@@ -1,5 +1,5 @@
 
-const user = require('../models/user');
+const Blog = require('../models/blog');
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
 beforeAll(async () => {
@@ -14,7 +14,7 @@ afterAll(async () => {
 describe('testing the blog page', () => {
 // the code below is for insert testing
  it('Add blog testing anything', () => {
- const blog = {
+ const Blog = {
  'blogImage': '',
  'blogTitle': 'abc',
  'blogDescription': 'dfghjkl',
@@ -33,7 +33,7 @@ describe('testing the blog page', () => {
  });
 
  it("to find something", () => {
-     const blog = {
+     const Blog = {
          'blogdescription' : 'dfghjkl',
      };
  })

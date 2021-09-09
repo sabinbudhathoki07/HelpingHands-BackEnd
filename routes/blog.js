@@ -1,59 +1,90 @@
 const express = require('express');
 const router = express.Router();
 const Blog = require('../models/blog');
-const bcrypt = require('bcryptjs');
-const blog = require('../middleware/uploadsBlog');
-const {check, validationResult} = require('express-validator');
-const jsonWebToken = require('jsonwebtoken');
-
-//Blog Register
-router.post('/blog/insert',blog.single('blogImage'),(req, res) => {
-	console.log("Entered Blog Insert Route");
-	const errors = validationResult(req);
-
-	if(!errors.isEmpty()){
-		var error = errors.array();
-		return res.status(400).json(error);
-	}
-	else{
-		if(req.file==undefined){
-			console.log("\nInvalid Blog Picture Format");
-            return res.status(500).json("Invalid Blog Picture Image Format");
-        }
-		const blogImage = req.file.filename;
-		const blogTitle = req.body.blogTitle;
-		const blogDescription = req.body.blogDescription;
-		const blogDetail = req.body.blogDetail;
-		const blogTags = req.body.blogTags;
-		const blogPostedBy = req.body.blogPostedBy;
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../utils/multer");
 
 
-		var blogDetails = new Blog({
-			blogImage: blogImage,
-			blogTitle: blogTitle,
-			blogDescription: blogDescription,
-			blogDetail: blogDetail,
-			blogTags: blogTags,
-			blogPostedBy : blogPostedBy,
-		});
-				
-	    blogDetails.save()
-		.then(function(data){
-			res.status(201).json({ 
-				success: true, message : "Blog Added"
-			})
-			console.log("Blog Added");
-			console.log(blogDetails);
-		})
-		.catch(function(error){
-			res.status(500).json({
-				message: "Blog Addition Failed"
-			})
-			console.log(error);
-			console.log("Blog Addition Failed");
-		});
-	}
+router.post("/blog/insert", upload.single("images"), async (req, res) => {
+  try {
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    // Create new user
+    let blog = new Blog({
+        blogTitle : req.body.blogTitle,
+		    blogDescription : req.body.blogDescription,
+        blogDetail : req.body.blogDetail,
+        blogTags : req.body.blogTags,
+        blogPostedBy : req.body.blogPostedBy,
+        blogImage: result.secure_url
+    });
+    // Save user
+    await blog.save();
+    res.json(blog);
+  } catch (err) {
+    console.log(err);
+  }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// //Blog Register
+// router.post('/blog/insert',blog.single('blogImage'),(req, res) => {
+// 	console.log("Entered Blog Insert Route");
+// 	const errors = validationResult(req);
+
+// 	if(!errors.isEmpty()){
+// 		var error = errors.array();
+// 		return res.status(400).json(error);
+// 	}
+// 	else{
+// 		if(req.file==undefined){
+// 			console.log("\nInvalid Blog Picture Format");
+//             return res.status(500).json("Invalid Blog Picture Image Format");
+//         }
+// 		const blogImage = req.file.filename;
+// 		const blogTitle = req.body.blogTitle;
+// 		const blogDescription = req.body.blogDescription;
+// 		const blogDetail = req.body.blogDetail;
+// 		const blogTags = req.body.blogTags;
+// 		const blogPostedBy = req.body.blogPostedBy;
+
+// 		var blogDetails = new Blog({
+// 			blogImage: blogImage,
+// 			blogTitle: blogTitle,
+// 			blogDescription: blogDescription,
+// 			blogDetail: blogDetail,
+// 			blogTags: blogTags,
+// 			blogPostedBy : blogPostedBy,
+// 		});
+				
+// 	    blogDetails.save()
+// 		.then(function(data){
+// 			res.status(201).json({ 
+// 				success: true, message : "Blog Added"
+// 			})
+// 			console.log("Blog Added");
+// 			console.log(blogDetails);
+// 		})
+// 		.catch(function(error){
+// 			res.status(500).json({
+// 				message: "Blog Addition Failed"
+// 			})
+// 			console.log(error);
+// 			console.log("Blog Addition Failed");
+// 		});
+// 	}
+// });
 
 router.get('/blog/display',(req,res) => {
 	Blog.find().then(function(blogDetails){
@@ -100,6 +131,33 @@ router.get("/blog/display/:id",function(req,res){
     })
 });
 
+router.delete('/blog/delete/:id', function(req,res){
+	const id = req.params.id;
+	Blog.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
+
+router.put('/blog/update-blog',(req,res) => {
+    const id = req.body.id;
+    const blogTitle = req.body.blogTitle 
+    const blogDescription = req.body.blogDescription 
+    const blogDetail = req.body.blogDetail
+    const blogTags = req.body.blogTags
+
+    Blog.updateOne({_id:id},{
+      blogTitle : blogTitle,
+      blogDescription : blogDescription,
+      blogDetail : blogDetail,
+      blogTags : blogTags
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
+    })
+});
 
 
 module.exports = router;

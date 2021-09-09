@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Donation = require('../models/donation');
 const bcrypt = require('bcryptjs');
+const User = require("../models/user");
 const {check, validationResult} = require('express-validator');
 const jsonWebToken = require('jsonwebtoken');
+const authentication = require('../middleware/authentication');
 
-router.post('/donate',
+router.post('/donate',authentication.verifyUser,
 (req, res) => {
 	const errors = validationResult(req);
+    console.log("Donate")
 
 	if(!errors.isEmpty()){
 		res.send(errors.array());
@@ -24,6 +27,7 @@ router.post('/donate',
         const donorPostalCode = req.body.donorPostalCode;
         const donorDonated = req.body.donorDonated;
         const donatedBy = req.body.donatedBy;
+        const userBalance = req.body.userBalance 
         
         var donate = new Donation({
             campaignId:campaignId,
@@ -58,6 +62,17 @@ router.get('/donation/display',(req,res) => {
 	})
 });
 
+router.get("/donation/display/:id",function(req,res){    
+    const id = req.params.id;
+    Donation.findOne({_id:id})
+    .then(function(data){
+        res.status(200).json(data);
+    })
+    .catch(function(err){
+        res.status(500).json({message : err})
+    })
+});
+
 router.get("/my-donation/display/:id",function(req,res){    
     const id = req.params.id;
 	console.log(id)
@@ -68,5 +83,38 @@ router.get("/my-donation/display/:id",function(req,res){
 	})
 });
 
+router.put('/donation/update-donation',(req,res) => {
+    const id = req.body.id;
+    const donorAddress1 = req.body.donorAddress1 
+    const donorAddress2 = req.body.donorAddress2 
+    const donorCity = req.body.donorCity
+    const donorPostalCode = req.body.donorPostalCode
+    const donorFullName = req.body.donorFullName
+    const donorEmailAddress = req.body.donorEmailAddress
+    const donorContactNumber = req.body.donorContactNumber
+
+    Donation.updateOne({_id:id},{
+      donorAddress1 : donorAddress1,
+      donorAddress2 : donorAddress2,
+      donorCity : donorCity,
+      donorPostalCode : donorPostalCode,
+      donorFullName : donorFullName,
+      donorEmailAddress : donorEmailAddress,
+      donorContactNumber : donorContactNumber,
+    })
+    .then(function(result){
+      res.status(200).json(result);
+    })
+    .catch(function(err){
+      res.status(500).json({message : err})
+    })
+});
+
+router.delete('/donation/delete/:id', function(req,res){
+	const id = req.params.id;
+	Donation.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 module.exports = router;

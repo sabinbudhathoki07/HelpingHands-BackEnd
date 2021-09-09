@@ -1,5 +1,5 @@
 
-const user = require('../models/user');
+const Campaign = require('../models/campaign');
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
 beforeAll(async () => {
@@ -11,15 +11,14 @@ beforeAll(async () => {
 afterAll(async () => {
  await mongoose.connection.close();
 });
-describe('testing the blog page', () => {
+describe('campaign the blog page', () => {
 // the code below is for insert testing
- it('Add blog testing anything', () => {
+ it('Add campaign testing anything', () => {
  const campaign = {
  'campaignImage': '',
  'campaignName': 'abc',
  'campaignShortDescription': 'dfghjkl',
  'campaignGoal': 'test3sdfghjkl',
- 'campaignDays': 'test4dfghjkl;',
  'campaignCategories': 'test3sdfghjkl',
  'campaignDays': 'test4dfghjkl;',
  'campaignTags': 'test3sdfghjkl',
@@ -30,13 +29,6 @@ describe('testing the blog page', () => {
  
 
  }
-
-
- 
-//  return blog.create(blog)
-//  .then((pro_ret) => {
-//  expect(pro_ret.blogDescription).toEqual('dfghjkl');
-//  });
  });
 
  it("to find something", () => {

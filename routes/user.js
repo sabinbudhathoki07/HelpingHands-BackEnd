@@ -1,114 +1,196 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const {check, validationResult} = require('express-validator');
-const jsonWebToken = require('jsonwebtoken');
 
+const user = require("../models/user");
+const jwt = require("jsonwebtoken");
+const userconfig = require("../config/user.config");
+const nodemailer = require("../config/nodemailer.config");
 
-// const {signup,activateAccount,forgetPassword,resetPassword} = require("../middleware/auth");
-// const user = require('../models/user');
-// const { addListener } = require('../models/user');
-// //User Register
-// router.post('/user/register',signup);
-
-// //email-activate
-// router.post('/user/email-activate',activateAccount);
-
-// //forget password
-
-
-// router.put('/user/forget-password', forgetPassword)
-// router.put('/user/resetpassword', resetPassword)
-
-// User Register
-router.post('/user/register',function(req,res){
-	const errors = validationResult(req);
-
-	if(!errors.isEmpty()){
-		res.send(errors.array());
-	}
-	else{
-		const userFullName=req.body.userFullName;
-        const userContactNumber = req.body.userContactNumber;
-        const userEmailAddress = req.body.userEmailAddress;
-		const userPassword = req.body.userPassword;
-        bcrypt.hash(userPassword,10,function(error,hash){
-			var userDetails = new Contact({
-				userFullName:userFullName,
-				userContactNumber:userContactNumber,
-				userEmailAddress:userEmailAddress,
-				userPassword:hash
-			});
-			userDetails.save()
-			.then(function(data){
-				//Success Insert
-				res.status(200).json({success:true,data:data,message: "Message Sent Successfully"});
-			})
-			.catch(function(err){
-				// Internal Server Error
-				res.status(500).json({message: "Message Sent Failed, Please Try Again"})
-			});
-			console.log(userDetails);
-			console.log("Message Sent Successfully")
-		})
-	}
-})
-
-
-// User Login
-router.post('/user/login',function(req,res){
-	
-	console.log("Entered Login Route");
-
+router.post("/user/register", function (req, res) {
+	const token = jwt.sign({ userEmailAddress: req.body.userEmailAddress }, userconfig.secret);
+	var userData = new user({
+	  userFullName: req.body.userFullName,
+	  userContactNumber: req.body.userContactNumber,
+	  userEmailAddress: req.body.userEmailAddress,
+	  userPassword: req.body.userPassword,
+	  ConfirmationCode: token,
+	});
+	//for encrypting the password
+	bcrypt.genSalt(10, (err, salt) => {
+	  bcrypt.hash(userData.userPassword, salt, (err, hash) => {
+		if (err) throw err;
+		userData.userPassword = hash;
+		userData.save((err) => {
+		  if (err) {
+			res.status(500).send({ message: err });
+			return;
+		  }
+		  res.send({
+			message: "user was registered successfully! Please check your email",
+		  });
+  
+		  nodemailer.sendConfirmationEmail(
+			userData.userFullName,
+			userData.userEmailAddress,
+			userData.ConfirmationCode
+		  );
+		});
+	  });
+	});
+  });
+  
+  router.post("/user/login", (req, res) => {
 	const userEmailAddress = req.body.userEmailAddress;
 	const userPassword = req.body.userPassword;
+  
+	user.findOne({ userEmailAddress: userEmailAddress }).then(function (userData) {
+	  if (userData === null) {
+		//killing the code not giving further access
+		return res.status(403).json({ message: "Invalid Credentials" });
+	  }
+	  bcrypt.compare(userPassword, userData.userPassword, function (err, result) {
 
-	console.log("\nEmailAddress :", userEmailAddress);
-	console.log("userPassword :", userPassword);
-    
-	User.findOne({userEmailAddress: userEmailAddress})
-	.then(function(userModel){
-
-		if(userModel==null){
-			return res.status(403).json({
-				success:false,
-				message : "Invalid Credentials!! Null"})
+		if (result===false){
+			return	res.status(403).json({
+				message :"Invalid Credentials!! Result False"})
 		}
-
-		//res.send("Login Successful")
-		bcrypt.compare(userPassword,userModel.userPassword,function(err,result){
-
-			if (result===false){
-				return	res.status(403).json({
-					success:false,
-					message :"Invalid Credentials!! Result False"})
-			}
-
-			console.log("\nValid Login, Generating Token");
-
-			// If Valid Login then Token is Generated
-			const token =jsonWebToken.sign({userId:userModel._id},'secretkey');
-			console.log("\nToken :", token)
+		else{
+		//generating token
+			const token = jwt.sign({ userId: userData._id }, 'secretkey');
 			res.status(200).json({
-				success: true,
-				token: token,
-				id:userModel._id,
-				userEmailAddress:userEmailAddress
+			success: true,
+			token: token,
+			id:userData._id
+			});
+		}
+	  });
+	});
+  });
+  
+  
+router.put("/user/confirm/:Confirmationcode", (req, res) => {
+	user
+	  .findOne({
+		ConfirmationCode: req.params.ConfirmationCode,
+	  })
+	  .then(function (data) {
+		if (data.Status === "Verified") {
+		  return res.status(200).send({ message: "Already Verified" });
+		} else if (!data) {
+		  return res.status(404).send({ message: "User Not Found" });
+		} else if (data) {
+		  user
+			.updateOne(
+			  { ConfirmationCode: req.params.ConfirmationCode },
+			  { Status: "Verified" }
+			)
+			.then(function () {
+			  const message = "Account Verified";
+			  res.status(201).json({ success: true, message: message });
+			  console.log(message);
 			})
-			console.log("Id",userModel._id)
-			console.log("\n",userEmailAddress,"is Logged-in Successfully.")
-		})
-	})
-	.catch()
-})
+			.catch(function (err) {
+			  res.status(500).json({ success: false, message: err });
+			});
+		}
+	  })
+	  .catch(function (e) {
+		res.status(500).json({ success: false, message: e });
+	  });
+  });
+  module.exports = router;
+
+
+
+// // user Register
+// router.post('/user/register',function(req,res){
+// 	const errors = validationResult(req);
+
+// 	if(!errors.isEmpty()){
+// 		res.send(errors.array());
+// 	}
+// 	else{
+// 		const userFullName=req.body.userFullName;
+//         const userContactNumber = req.body.userContactNumber;
+//         const userEmailAddress = req.body.userEmailAddress;
+// 		const userPassword = req.body.userPassword;
+//         bcrypt.hash(userPassword,10,function(error,hash){
+// 			var userDetails = new Contact({
+// 				userFullName:userFullName,
+// 				userContactNumber:userContactNumber,
+// 				userEmailAddress:userEmailAddress,
+// 				userPassword:hash
+// 			});
+// 			userDetails.save()
+// 			.then(function(data){
+// 				//Success Insert
+// 				res.status(200).json({success:true,data:data,message: "Message Sent Successfully"});
+// 			})
+// 			.catch(function(err){
+// 				// Internal Server Error
+// 				res.status(500).json({message: "Message Sent Failed, Please Try Again"})
+// 			});
+// 			console.log(userDetails);
+// 			console.log("Message Sent Successfully")
+// 		})
+// 	}
+// })
+
+
+// // user Login
+// router.post('/user/login',function(req,res){
+	
+// 	console.log("Entered Login Route");
+
+// 	const userEmailAddress = req.body.userEmailAddress;
+// 	const userPassword = req.body.userPassword;
+
+// 	console.log("\nEmailAddress :", userEmailAddress);
+// 	console.log("userPassword :", userPassword);
+    
+// 	user.findOne({userEmailAddress: userEmailAddress})
+// 	.then(function(userModel){
+
+// 		if(userModel==null){
+// 			return res.status(403).json({
+// 				success:false,
+// 				message : "Invalid Credentials!! Null"})
+// 		}
+
+// 		//res.send("Login Successful")
+// 		bcrypt.compare(userPassword,userModel.userPassword,function(err,result){
+
+// 			if (result===false){
+// 				return	res.status(403).json({
+// 					success:false,
+// 					message :"Invalid Credentials!! Result False"})
+// 			}
+
+// 			console.log("\nValid Login, Generating Token");
+
+// 			// If Valid Login then Token is Generated
+// 			const token =jsonWebToken.sign({userId:userModel._id},'secretkey');
+// 			console.log("\nToken :", token)
+// 			res.status(200).json({
+// 				success: true,
+// 				token: token,
+// 				id:userModel._id,
+// 				userEmailAddress:userEmailAddress
+// 			})
+// 			console.log("Id",userModel._id)
+// 			console.log("\n",userEmailAddress,"is Logged-in Successfully.")
+// 		})
+// 	})
+// 	.catch()
+// })
 
 
 router.get("/account/:id",function(req,res){    
 	console.log("Account")
     const id = req.params.id;
 	console.log(id)
-    User.findOne({_id:id})
+    user.findOne({_id:id})
     .then(function(result){
         res.status(200).json(result);
     })
@@ -118,8 +200,25 @@ router.get("/account/:id",function(req,res){
 });
 
 router.get('/user/display',(req,res) => {
-	User.find().then(function(userDetails){
+	user.find().then(function(userDetails){
 		res.send(userDetails);
+	})
+});
+
+router.put('/user/update-profile',(req,res) => {
+	const id = req.body.id;
+	const userFullName = req.body.userFullName 
+	const userContactNumber = req.body.userContactNumber 
+
+    user.updateOne({_id:id},{
+		userFullName : userFullName,
+		userContactNumber : userContactNumber
+	})
+	.then(function(result){
+		res.status(200).json(result);
+	})
+	.catch(function(err){
+		res.status(500).json({message : err})
 	})
 });
 
@@ -133,7 +232,7 @@ router.put('/user/load-balance',(req,res) => {
 	console.log("Load-Balance Amount : " + req.body.userNewBalance)
 	console.log("Your New Balance Amount: " + Balance)
 
-    User.updateOne({_id:id},{
+    user.updateOne({_id:id},{
 		userBalance : Balance
 	})
 	.then(function(result){
@@ -147,7 +246,7 @@ router.put('/user/load-balance',(req,res) => {
 router.get('/my-account/display/:id',(req,res) => {
     const id = req.params.id;
 	console.log(id)
-    User.findOne({_id:id})
+    user.findOne({_id:id})
     .then(function(result){
         res.status(200).json(result);
     })
@@ -155,5 +254,12 @@ router.get('/my-account/display/:id',(req,res) => {
         res.status(500).json({message : err})
     })
 });
+
+router.delete('/user/delete/:id', function(req,res){
+	const id = req.params.id;
+	user.deleteOne({_id: id}).then(function(){
+		res.status(200).json({success:true})
+	})
+})
 
 module.exports = router;

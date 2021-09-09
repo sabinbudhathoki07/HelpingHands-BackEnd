@@ -1,5 +1,5 @@
 
-const user = require('../models/user');
+const Contact = require('../models/contact');
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
 beforeAll(async () => {

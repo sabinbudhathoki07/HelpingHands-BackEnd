@@ -1,5 +1,4 @@
-
-const user = require('../models/user');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/HelpingHands-BackEnd';
 beforeAll(async () => {
@@ -14,7 +13,7 @@ afterAll(async () => {
 describe('user Schema test anything', () => {
 // the code below is for insert testing
  it('Add user testing anything', () => {
- const user = {
+ const User = {
  'userEmailAddress': 'test3@gmail.com',
  'userPassword': 'test3',
  'userFullName' : 'dilip poudel',
@@ -22,8 +21,9 @@ describe('user Schema test anything', () => {
 
  };
  
-//  return user.create(user)
+//  return User.create(user)
 //  .then((pro_ret) => {
-//  expect(pro_ret.userEmailAddress).toEqual('testing3 ');
+//  expect(pro_ret.userEmailAddress).toEqual('test3@gmail.com');
+//  });
  });
- });
+})
